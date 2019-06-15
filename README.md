@@ -1,2 +1,2 @@
-# NIMgame
-I am studying dynamic programming, so I am doing this exercise.
+# AlgoritmDesign
+I am studying algorithm design, so I am doing this exercise.
