@@ -18,7 +18,11 @@ public class Fibonacci {
 		n = read.nextInt();
 		
 		forward(n);
+		for (i=0; i<100; i++) {
+			resultado[i] = -1;
+		}
 		System.out.println("Backward(): "+backward(n));
+		
 		System.out.println("Funcion(): "+funcion(n));
 		System.out.println("ok bye");
 		
