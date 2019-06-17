@@ -1,4 +1,4 @@
-package probabilistic1;
+package Coseno;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -13,14 +13,14 @@ public class Coseno {
     public static void main(String[] args) {
         int k;
         
-        System.out.println("Calcular el área de 3cos(x) por debajo entre:\nx = 0\nx = pi/2\n");
-        System.out.println("Introduce el tamaño de la muestra:\n");
+        System.out.println("Calcular el area de 3cos(x) por debajo entre:\nx = 0\nx = pi/2\n");
+        System.out.println("Introduce el tama�o de la muestra:\n");
         k = read.nextInt();
         double [] valores = new double[k];
         
-        System.out.println("Área según VM = "+calcularAreaVM(valores, k));
-        System.out.println("Área según Proporción = "+calcularAreaP(k));
-        System.out.println("Área real = "+areaFuncion());
+        System.out.println("Area segun VM= "+calcularAreaVM(valores, k));
+        System.out.println("Area proporcion = "+calcularAreaP(k));
+        System.out.println("Area real= "+areaFuncion());
         
         
     }
@@ -82,7 +82,7 @@ public class Coseno {
         System.out.println("p = "+p);
         intervalos[0] = p - (1.96 * Math.sqrt(p*(1-p)/(double)n));
         intervalos[1] = p + (1.96 * Math.sqrt(p*(1-p)/(double)n));
-        System.out.println("Intervalo de confianza con Proporción: ("+intervalos[0]+", "+intervalos[1]+")");
+        System.out.println("Intervalo de confianza con Proporcion: ("+intervalos[0]+", "+intervalos[1]+")");
     }
     
     public static double media (double [] valores){

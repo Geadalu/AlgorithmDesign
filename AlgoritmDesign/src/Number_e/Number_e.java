@@ -20,7 +20,7 @@ public class Number_e {
         int n, xIzq, xDer;
         
         System.out.println("Function f(x) = e^-2x");
-        System.out.println("TamaÃ±o de la muestra:");
+        System.out.println("Tamaño de la muestra:");
         n = read.nextInt();
         
         System.out.println("Que vaya desde x = ");
@@ -28,8 +28,8 @@ public class Number_e {
         System.out.println("Hasta x = ");
         xDer = read.nextInt();
         
-        
-        
+        System.out.println("Area segun VM: "+areaVM(n, xIzq, xDer));
+        System.out.println("Area segun Probabilidad "+areaP(n));
         
         
     }
@@ -45,10 +45,15 @@ public class Number_e {
             randomY = funcion(randomX);
             valores[i] = (xDer-xIzq) * randomY;
         }
+        //System.out.println("v = "+valores[n-1]);
         m = media(valores);
         intervaloConfianza(n, valores, m);
         
-        return m/n;
+        return m;
+    }
+    
+    public static double areaP(int n) {
+    	
     }
     
     public static double funcion(double x){
@@ -57,7 +62,7 @@ public class Number_e {
     
     public static double media (double [] valores){
         int i;
-        int total = 0;
+        double total = 0.0;
         
         for(i=0; i<valores.length; i++){
             total += valores[i];
@@ -70,7 +75,7 @@ public class Number_e {
         double cuasiV = cuasiVarianza(n, valores, media);
         intervalos[0] = (media - (1.96 * cuasiV/Math.sqrt(n)));
         intervalos[1] = (media + (1.96 * cuasiV/Math.sqrt(n)));
-        
+        System.out.println("Intervalo de confianza: ("+intervalos[0]+", "+intervalos[1]+")");
         
     }
     
