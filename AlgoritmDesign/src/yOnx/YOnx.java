@@ -26,7 +26,7 @@ public class YOnx {
         limS = read.nextInt();
         
         System.out.println("Área según el teorema del VM = "+areaVM(n, limI, limS));
-        System.out.println("Área según probabilidad = "+areaP(n));
+        System.out.println("Área según probabilidad = "+areaP(n, limI, limS));
         System.out.println("Área real = "+areaFuncion(limI, limS));
         
         
@@ -35,20 +35,43 @@ public class YOnx {
     public static double areaVM(int n, int limI, int limS){
         double [] resultados = new double [n];
         int i;
-        double randomX, randomY;
+        double randomX, randomY, media;
         
         for (i=0; i<n; i++){
             randomX = rand.nextDouble()*limS - limI;
             randomY = funcion(randomX);
             resultados[i] = randomX * randomY;
         }
-        
+        media = media(resultados);
+        intervaloConfianza(media, resultados);
+        return media;
     }
     
-    
-    public static double areaP(int n){
+    /**
+     * Siempre salen todos los puntos dentro
+     * @param n
+     * @param limS
+     * @param limI
+     * @return 
+     */
+    public static double areaP(int n, int limS, int limI){
+        //double [] resultados = new double[n];
+        int i;
+        int buenos = 0;
+        double randomX, randomY;
         
+        for (i=0; i<n; i++){
+            randomX = rand.nextDouble()*limS - limI;
+            randomY = rand.nextDouble()*limS - limI;
+            //System.out.println("randomX = "+randomX+"\nrandomY = "+randomY);
+            if (randomY < funcion(randomX)){
+                buenos ++;
+            }
+        }
+        System.out.println(buenos);
+        intervaloConfianzaP((double)buenos/(double)n, n);
         
+        return funcion(limS)*(limS-limI)*(double)buenos/n;
     }
     
     public static double areaFuncion(int limI, int limS){
@@ -57,7 +80,44 @@ public class YOnx {
     }
     
     public static double funcion (double x){
-        return Math.pow(x, 2);
+        return Math.pow(2, x);
+    }
+    
+    public static double media (double [] matriz){
+        int i;
+        double result = 0.0;
+        
+        for (i=0; i<matriz.length; i++){
+            result += matriz[i];
+        }
+        
+        return result/matriz.length;
+    }
+    
+    public static void intervaloConfianza(double media, double [] resultados){
+        double [] intervalo = new double[2];
+        double cuasiV = cuasiV(resultados);
+        intervalo[0] = media - 1.96 * (cuasiV / Math.sqrt(resultados.length));
+        intervalo[1] = media + 1.96 * (cuasiV / Math.sqrt(resultados.length));
+        System.out.println("Intervalo de confianza: ("+intervalo[0]+", "+intervalo[1]+")");
+    }
+    
+    public static void intervaloConfianzaP(double p, int n){
+        double [] intervalo = new double[2];
+        intervalo[0] = p - 1.96 * (Math.sqrt((1-p)/n));
+        intervalo[1] = p + 1.96 * (Math.sqrt((1-p)/n));
+        System.out.println("Intervalo de confianza proporciones: ("+intervalo[0]+", "+intervalo[1]+")");
+    }
+    
+    public static double cuasiV (double [] resultados){
+        int i;
+        double media = media(resultados);
+        double cuasiV = 0.0;
+        
+        for (i=0; i<resultados.length; i++){
+            cuasiV += Math.pow(resultados[i] - media, 2);
+        }
+        return cuasiV/resultados.length;
     }
     
 }
