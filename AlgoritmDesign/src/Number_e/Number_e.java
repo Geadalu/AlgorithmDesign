@@ -16,7 +16,7 @@ public class Number_e {
     static Scanner read = new Scanner(System.in);
     static Random rand = new Random();
     
-    public static void main (String [] args){
+    private static void main (String [] args){
         int n, xIzq, xDer;
         int limI = 0;
         int limS = 1;
@@ -36,7 +36,7 @@ public class Number_e {
         
     }
     
-    public static double areaVM(int n, int xIzq, int xDer){
+    private static double areaVM(int n, int xIzq, int xDer){
         int i;
         double randomX, randomY;
         double [] valores = new double [n];
@@ -61,7 +61,7 @@ public class Number_e {
      * @param limS
      * @return 
      */
-    public static double areaP(int n, int limI, int limS) {
+    private static double areaP(int n, int limI, int limS) {
     	int i;
         int buenos = 0;
         double randomX, randomY;
@@ -77,11 +77,11 @@ public class Number_e {
         return (limS-limI)*funcion(limS)*(double)buenos/(double)n;
     }
     
-    public static double funcion(double x){
+    private static double funcion(double x){
         return Math.pow(Math.E, -2*x);
     }
     
-    public static double media (double [] valores){
+    private static double media (double [] valores){
         int i;
         double total = 0.0;
         
@@ -91,7 +91,7 @@ public class Number_e {
         return total/valores.length;
     }
     
-    public static void intervaloConfianza(int n, double [] valores, double media){
+    private static void intervaloConfianza(int n, double [] valores, double media){
         double [] intervalos = new double [2];
         double cuasiV = cuasiVarianza(n, valores, media);
         intervalos[0] = (media - (1.96 * cuasiV/Math.sqrt(n)));
@@ -100,7 +100,7 @@ public class Number_e {
         
     }
     
-    public static double cuasiVarianza(int n, double [] valores, double media){
+    private static double cuasiVarianza(int n, double [] valores, double media){
         double cosa = 0.0;
         int i;
         
@@ -111,7 +111,7 @@ public class Number_e {
         return Math.sqrt(cosa/(n-1)); //desviacion tipica
     }
     
-    public static void intervaloConfianzaP(double p, double n){
+    private static void intervaloConfianzaP(double p, double n){
         double [] intervalos = new double [2];
         intervalos[0] = p - (1.96 * (Math.sqrt(p * (1-p)/n)));
         intervalos[1] = p + (1.96 * (Math.sqrt(p * (1-p)/n)));

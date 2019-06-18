@@ -32,7 +32,7 @@ public class YOnx {
         
     }
     
-    public static double areaVM(int n, int limI, int limS){
+    private static double areaVM(int n, int limI, int limS){
         double [] resultados = new double [n];
         int i;
         double randomX, randomY, media;
@@ -54,7 +54,7 @@ public class YOnx {
      * @param limI
      * @return 
      */
-    public static double areaP(int n, int limS, int limI){
+    private static double areaP(int n, int limS, int limI){
         //double [] resultados = new double[n];
         int i;
         int buenos = 0;
@@ -74,16 +74,16 @@ public class YOnx {
         return funcion(limS)*(limS-limI)*(double)buenos/n;
     }
     
-    public static double areaFuncion(int limI, int limS){
+    private static double areaFuncion(int limI, int limS){
         
         return 1.0;
     }
     
-    public static double funcion (double x){
+    private static double funcion (double x){
         return Math.pow(2, x);
     }
     
-    public static double media (double [] matriz){
+    private static double media (double [] matriz){
         int i;
         double result = 0.0;
         
@@ -94,7 +94,7 @@ public class YOnx {
         return result/matriz.length;
     }
     
-    public static void intervaloConfianza(double media, double [] resultados){
+    private static void intervaloConfianza(double media, double [] resultados){
         double [] intervalo = new double[2];
         double cuasiV = cuasiV(resultados);
         intervalo[0] = media - 1.96 * (cuasiV / Math.sqrt(resultados.length));
@@ -102,14 +102,14 @@ public class YOnx {
         System.out.println("Intervalo de confianza: ("+intervalo[0]+", "+intervalo[1]+")");
     }
     
-    public static void intervaloConfianzaP(double p, int n){
+    private static void intervaloConfianzaP(double p, int n){
         double [] intervalo = new double[2];
         intervalo[0] = p - 1.96 * (Math.sqrt((1-p)/n));
         intervalo[1] = p + 1.96 * (Math.sqrt((1-p)/n));
         System.out.println("Intervalo de confianza proporciones: ("+intervalo[0]+", "+intervalo[1]+")");
     }
     
-    public static double cuasiV (double [] resultados){
+    private static double cuasiV (double [] resultados){
         int i;
         double media = media(resultados);
         double cuasiV = 0.0;
@@ -117,7 +117,7 @@ public class YOnx {
         for (i=0; i<resultados.length; i++){
             cuasiV += Math.pow(resultados[i] - media, 2);
         }
-        return cuasiV/resultados.length;
+        return Math.sqrt(cuasiV/resultados.length-1);
     }
     
 }
