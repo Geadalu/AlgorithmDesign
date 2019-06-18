@@ -18,18 +18,20 @@ public class Number_e {
     
     public static void main (String [] args){
         int n, xIzq, xDer;
+        int limI = 0;
+        int limS = 1;
         
         System.out.println("Function f(x) = e^-2x");
-        System.out.println("Tama�o de la muestra:");
+        System.out.println("Tamaño de la muestra:");
         n = read.nextInt();
         
         System.out.println("Que vaya desde x = ");
-        xIzq = read.nextInt();
+        limI = read.nextInt();
         System.out.println("Hasta x = ");
-        xDer = read.nextInt();
+        limS = read.nextInt();
         
-        System.out.println("Area segun VM: "+areaVM(n, xIzq, xDer));
-        System.out.println("Area segun Probabilidad "+areaP(n));
+        System.out.println("Area segun VM: "+areaVM(n, limI, limS));
+        System.out.println("Area segun Probabilidad "+areaP(n, limI, limS));
         
         
     }
@@ -52,8 +54,27 @@ public class Number_e {
         return m;
     }
     
-    public static double areaP(int n) {
-    	
+    /**
+     * No está bien
+     * @param n
+     * @param limI
+     * @param limS
+     * @return 
+     */
+    public static double areaP(int n, int limI, int limS) {
+    	int i;
+        int buenos = 0;
+        double randomX, randomY;
+        
+        for (i=0; i<n; i++){
+            randomX = rand.nextDouble()*limS - limI;
+            randomY = rand.nextDouble()*limS - limI;
+            if (randomY < funcion(randomX)){
+                buenos++;
+            }
+        }
+        intervaloConfianzaP((double)buenos/(double)n, n);
+        return (limS-limI)*funcion(limS)*(double)buenos/(double)n;
     }
     
     public static double funcion(double x){
@@ -88,5 +109,12 @@ public class Number_e {
         }
         
         return Math.sqrt(cosa/(n-1)); //desviacion tipica
+    }
+    
+    public static void intervaloConfianzaP(double p, double n){
+        double [] intervalos = new double [2];
+        intervalos[0] = p - (1.96 * (Math.sqrt(p * (1-p)/n)));
+        intervalos[1] = p + (1.96 * (Math.sqrt(p * (1-p)/n)));
+        System.out.println("Intervalo de confianza Proporcion: ("+intervalos[0]+", "+intervalos[1]+")");
     }
 }
