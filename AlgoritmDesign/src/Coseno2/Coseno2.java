@@ -22,9 +22,8 @@ public class Coseno2 {
         
         System.out.println("Function xcos(x)\nTamaño de la muestra:");
         n = read.nextInt();
-        System.out.println("Que vaya desde (limI): ");
-        limI = read.nextInt();
-        System.out.println("Hasta (limS): ");
+        System.out.println("Que vaya desde 0 hasta (limS): ");
+        limI = 0;
         limS = read.nextInt();
 
         System.out.println("Área según VM = "+areaVM(n, limI, limS));
@@ -40,8 +39,8 @@ public class Coseno2 {
         double randomX, randomY, media;
         
         for (i=0; i<n; i++){
-            randomX = rand.nextDouble()*limS - limI;
-            randomY = funcion(randomX);
+            randomX = rand.nextDouble()*(limS - limI) +limI;
+            randomY = Math.abs(funcion(randomX));
             valores[i] = randomY * (limS-limI);
         }
         media = media(valores);
@@ -57,16 +56,16 @@ public class Coseno2 {
         double randomX, randomY, p;
         
         for (i=0; i<n; i++){
-            randomX = rand.nextDouble()*limS - limI;
-            randomY = rand.nextDouble()*limS - limI;
+            randomX = rand.nextDouble()*(limS - limI)+limI;
+            randomY = rand.nextDouble()*(2.65 - limI)+limI;
             if (randomY < funcion(randomX)){
                 buenos++;
             }
         }
         p = (double)buenos/(double)n;
-        intervaloConfianzaP(p, n);
+        intervaloConfianzaP(p, n, limS);
         
-        return (limS-limI)*Math.abs(funcion(limS))*p;
+        return limS*2.65*p;
     }
     
     private static double funcion(double x){
@@ -93,11 +92,11 @@ public class Coseno2 {
          
     }
     
-    private static void intervaloConfianzaP(double p, int n){
+    private static void intervaloConfianzaP(double p, int n, int limS){
        double [] intervalo = new double[2];
        intervalo[0] = p - 1.96 * (Math.sqrt((p*(1-p)/n)));
        intervalo[1] = p + 1.96 * (Math.sqrt((p*(1-p)/n)));
-       System.out.println("Intervalo de confianza proporciones: ("+intervalo[0]+", "+intervalo[1]+")");
+       System.out.println("Intervalo de confianza proporciones: ("+intervalo[0]*(limS*2.65)+", "+intervalo[1]*(limS*2.65)+")");
     }
      
     private static double cuasiV (double [] valores, double media){

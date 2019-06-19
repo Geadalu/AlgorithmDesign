@@ -6,35 +6,33 @@ public class Coseno {
 
     static Random rand = new Random();
     static Scanner read = new Scanner(System.in);
-    static int limS = 3;
-    static int limI = 0;
-
-  
+      
     public static void main(String[] args) {
         int k;
+        double limI = 0.0;
+        double limS = Math.PI/2;
         
         System.out.println("Calcular el área de 3cos(x) por debajo entre:\nx = 0\nx = pi/2\n");
         System.out.println("Introduce el tamaño de la muestra:");
         k = read.nextInt();
-        double [] valores = new double[k];
         
-        System.out.println("Área según VM = "+calcularAreaVM(valores, k));
-        System.out.println("Área según Proporción = "+calcularAreaP(k));
-        System.out.println("Área real (mal calculada) = "+areaFuncion());
-        
+        System.out.println("Área según VM = "+calcularAreaVM(k, limI, limS));
+        System.out.println("Área según Proporción = "+calcularAreaP(k, limI, limS));
+        //System.out.println("Área real (mal calculada) = "+areaFuncion());
         
     }
     
-    private static double calcularAreaVM(double [] valores, int k){
+    private static double calcularAreaVM(int k, double limI, double limS){
+        double [] valores = new double[k];
         double randomX;
         double randomY;
         int i;
         double total = 0;
         
         for (i=0; i<k; i++){
-           randomX = rand.nextDouble()*Math.PI/2 - 0;
+           randomX = rand.nextDouble()*(limS - limI)+limI;
            randomY = funcion(randomX);
-           valores[i] = randomX * randomY;
+           valores[i] = Math.PI/2 * randomY;
            total += valores[i];
         }
         intervaloConfianza(valores);
@@ -46,30 +44,32 @@ public class Coseno {
      * @param k
      * @return 
      */
-    private static double calcularAreaP(int k){
+    private static double calcularAreaP(int k, double limI, double limS){
         int i;
         double randomX, randomY;
         int validos = 0;
         
         for (i=0; i<k; i++){
-            randomX = rand.nextDouble()*Math.PI/2 - 0;
-            randomY = rand.nextDouble()*limS - limI;
+            randomX = rand.nextDouble()*(limS - limI)+limI;
+            randomY = rand.nextDouble()*(3 - 0)+0;
             if (randomY < funcion(randomX)){
                 validos++;
             }
         }
-        //System.out.println("validos/k = "+((double)validos/k));
-        intervaloConfianzaP((double)validos/k, k);
-        return limS*Math.PI/2*validos/k;
+        System.out.println("validos = "+validos);
+        
+        double areaCuadrado = (limS - limI)*3;
+        intervaloConfianzaP((double)validos/k, k, areaCuadrado);
+        return 3*(Math.PI/2-0)*validos/k;
     }
     
     private static double funcion(double x){
         return Math.cos(x)*3;
     }
     
-    private static double areaFuncion(){
+    /*private static double areaFuncion(){
         return 3*(Math.sin(limS)) - 3*(Math.sin(limI));
-    }
+    }*/
     
     private static void intervaloConfianza(double [] valores){
         double [] intervalos = new double [2];
@@ -82,12 +82,12 @@ public class Coseno {
         System.out.println("Intervalo de confianza: ("+intervalos[0]+", "+intervalos[1]+")");
     }
     
-    private static void intervaloConfianzaP(double p, int n){
+    private static void intervaloConfianzaP(double p, int n, double area){
         double [] intervalos = new double [2];
-        //System.out.println("p = "+p);
-        intervalos[0] = p - (1.96 * Math.sqrt(p*(1-p)/(double)n));
-        intervalos[1] = p + (1.96 * Math.sqrt(p*(1-p)/(double)n));
-        System.out.println("Intervalo de confianza con Proporción: ("+intervalos[0]+", "+intervalos[1]+")");
+        System.out.println("p = "+p);
+        intervalos[0] = p - (1.96 * Math.sqrt((p*(1-p))/n));
+        intervalos[1] = p + (1.96 * Math.sqrt((p*(1-p))/n));
+        System.out.println("Intervalo de confianza con Proporción: ("+intervalos[0]*area+", "+intervalos[1]*area+")");
     }
     
     private static double media (double [] valores){

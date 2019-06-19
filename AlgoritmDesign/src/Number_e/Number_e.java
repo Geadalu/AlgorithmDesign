@@ -16,14 +16,14 @@ public class Number_e {
     static Scanner read = new Scanner(System.in);
     static Random rand = new Random();
     
-    private static void main (String [] args){
-        int n, xIzq, xDer;
-        int limI = 0;
-        int limS = 1;
+    public static void main (String [] args){
+        int n;
+        int limI, limS;
         
         System.out.println("Function f(x) = e^-2x");
         System.out.println("Tamaño de la muestra:");
         n = read.nextInt();
+        //n = 900000;
         
         System.out.println("Que vaya desde x = ");
         limI = read.nextInt();
@@ -36,17 +36,19 @@ public class Number_e {
         
     }
     
-    private static double areaVM(int n, int xIzq, int xDer){
+    private static double areaVM(int n, int limI, int limS){
         int i;
         double randomX, randomY;
         double [] valores = new double [n];
         double m;
+        double suma = 0.0;
         
         for (i=0; i<n; i++){
-            randomX = rand.nextDouble()*xDer-xIzq;
+            randomX = rand.nextDouble()*(limS-limI)+limI;
             randomY = funcion(randomX);
-            valores[i] = (xDer-xIzq) * randomY;
+            valores[i] = (limS-limI) * randomY;
         }
+        
         //System.out.println("v = "+valores[n-1]);
         m = media(valores);
         intervaloConfianza(n, valores, m);
@@ -54,27 +56,24 @@ public class Number_e {
         return m;
     }
     
-    /**
-     * No está bien
-     * @param n
-     * @param limI
-     * @param limS
-     * @return 
-     */
     private static double areaP(int n, int limI, int limS) {
     	int i;
         int buenos = 0;
         double randomX, randomY;
         
         for (i=0; i<n; i++){
-            randomX = rand.nextDouble()*limS - limI;
-            randomY = rand.nextDouble()*limS - limI;
+            randomX = rand.nextDouble()*(limS - limI)+limI;
+            randomY = rand.nextDouble()*(funcion(limI) - 0) + 0;
+            //randomY = rand.nextDouble()*funcion(-2);
+            //System.out.println("(randomX, randomY) = ("+randomX+", "+randomY+")");
             if (randomY < funcion(randomX)){
                 buenos++;
             }
+            
         }
-        intervaloConfianzaP((double)buenos/(double)n, n);
-        return (limS-limI)*funcion(limS)*(double)buenos/(double)n;
+        System.out.println("buenos = "+buenos);
+        intervaloConfianzaP((double)buenos/(double)n, n, limS, limI);
+        return (limS-limI)*funcion(limI)*(double)buenos/(double)n;
     }
     
     private static double funcion(double x){
@@ -111,10 +110,11 @@ public class Number_e {
         return Math.sqrt(cosa/(n-1)); //desviacion tipica
     }
     
-    private static void intervaloConfianzaP(double p, double n){
+    private static void intervaloConfianzaP(double p, double n, int limS, int limI){
         double [] intervalos = new double [2];
+        //System.out.println(p);
         intervalos[0] = p - (1.96 * (Math.sqrt(p * (1-p)/n)));
         intervalos[1] = p + (1.96 * (Math.sqrt(p * (1-p)/n)));
-        System.out.println("Intervalo de confianza Proporcion: ("+intervalos[0]+", "+intervalos[1]+")");
+        System.out.println("Intervalo de confianza probabilidad: ("+intervalos[0]*funcion(limI)*(limS-limI)+", "+intervalos[1]*funcion(limI)*(limS-limI)+")");
     }
 }

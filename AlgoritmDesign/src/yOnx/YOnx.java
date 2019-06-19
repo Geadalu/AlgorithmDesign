@@ -20,14 +20,13 @@ public class YOnx {
         
         n = read.nextInt();
         
-        System.out.println("Límite inferior limI:");
+        System.out.println("Calcular desde (limI):");
         limI = read.nextInt();
-        System.out.println("Límite superior limS:");
+        System.out.println("Hasta (limS):");
         limS = read.nextInt();
         
         System.out.println("Área según el teorema del VM = "+areaVM(n, limI, limS));
         System.out.println("Área según probabilidad = "+areaP(n, limI, limS));
-        System.out.println("Área real = "+areaFuncion(limI, limS));
         
         
     }
@@ -38,9 +37,9 @@ public class YOnx {
         double randomX, randomY, media;
         
         for (i=0; i<n; i++){
-            randomX = rand.nextDouble()*limS - limI;
+            randomX = rand.nextDouble()*(limS - limI)+limI;
             randomY = funcion(randomX);
-            resultados[i] = randomX * randomY;
+            resultados[i] = (limS-limI) * randomY;
         }
         media = media(resultados);
         intervaloConfianza(media, resultados);
@@ -54,30 +53,26 @@ public class YOnx {
      * @param limI
      * @return 
      */
-    private static double areaP(int n, int limS, int limI){
+    private static double areaP(int n, int limI, int limS){
         //double [] resultados = new double[n];
         int i;
         int buenos = 0;
         double randomX, randomY;
         
         for (i=0; i<n; i++){
-            randomX = rand.nextDouble()*limS - limI;
-            randomY = rand.nextDouble()*limS - limI;
+            randomX = rand.nextDouble()*(limS - limI)+limI;
+            randomY = rand.nextDouble()*(funcion(limS) - funcion(limI)) + funcion(limI);
             //System.out.println("randomX = "+randomX+"\nrandomY = "+randomY);
             if (randomY < funcion(randomX)){
                 buenos ++;
             }
         }
         System.out.println(buenos);
-        intervaloConfianzaP((double)buenos/(double)n, n);
+        intervaloConfianzaP((double)buenos/(double)n, n, limS, limI);
         
         return funcion(limS)*(limS-limI)*(double)buenos/n;
     }
     
-    private static double areaFuncion(int limI, int limS){
-        
-        return 1.0;
-    }
     
     private static double funcion (double x){
         return Math.pow(2, x);
@@ -102,11 +97,11 @@ public class YOnx {
         System.out.println("Intervalo de confianza: ("+intervalo[0]+", "+intervalo[1]+")");
     }
     
-    private static void intervaloConfianzaP(double p, int n){
+    private static void intervaloConfianzaP(double p, int n, int limS, int limI){
         double [] intervalo = new double[2];
         intervalo[0] = p - 1.96 * (Math.sqrt((1-p)/n));
         intervalo[1] = p + 1.96 * (Math.sqrt((1-p)/n));
-        System.out.println("Intervalo de confianza proporciones: ("+intervalo[0]+", "+intervalo[1]+")");
+        System.out.println("Intervalo de confianza proporciones: ("+intervalo[0]*(limS-limI)*funcion(limS)+", "+intervalo[1]*(limS-limI)*funcion(limS)+")");
     }
     
     private static double cuasiV (double [] resultados){
