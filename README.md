@@ -1,2 +1,2 @@
-# AlgoritmDesign
-I am studying algorithm design, so I am doing these exercises.
+# AlgorithmDesign
+Dynamic algorithms to calculate functions and probabilistic algorithm to calculate their areas.
